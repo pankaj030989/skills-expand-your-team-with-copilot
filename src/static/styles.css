@@ -612,11 +612,58 @@ footer {
   }
 }
 
+/* Dark mode color overrides */
+body.dark-mode {
+  --background: #121212;
+  --surface: #1e1e1e;
+  --text-primary: #e0e0e0;
+  --text-secondary: #a0a0a0;
+  --border: #333333;
+  --border-light: #2a2a2a;
+  --border-focus: #444444;
+  --primary: #534bae;
+  --primary-light: #7c73c0;
+  --primary-dark: #1a237e;
+  --success-light: #1b3a1e;
+  --warning-light: #3a2e00;
+  --error-light: #3a1010;
+  --info-light: #0a2030;
+}
+
+body.dark-mode .activity-tag {
+  background: #2a2d5e;
+  color: #9fa8da;
+}
+
+body.dark-mode .search-box input {
+  background-color: var(--surface);
+  color: var(--text-primary);
+}
+
+body.dark-mode .modal-content {
+  background-color: var(--surface);
+  color: var(--text-primary);
+}
+
+body.dark-mode .modal-content label,
+body.dark-mode .modal-content h3 {
+  color: var(--text-primary);
+}
+
+body.dark-mode .modal-content input {
+  background-color: #2a2a2a;
+  color: var(--text-primary);
+  border-color: var(--border);
+}
+
 /* User controls in header */
 #user-controls {
   position: absolute;
   top: 10px;
   right: 15px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
 #user-status {
