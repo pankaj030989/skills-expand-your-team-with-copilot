@@ -530,6 +530,10 @@ document.addEventListener("DOMContentLoaded", () => {
       </div>
     `;
 
+    // Build share URL for this activity
+    const shareUrl = `${window.location.origin}${window.location.pathname}?activity=${encodeURIComponent(name)}`;
+    const shareText = `Check out "${name}" at Mergington High School: ${details.description}`;
+
     activityCard.innerHTML = `
       ${tagHtml}
       <h4>${name}</h4>
@@ -580,6 +584,25 @@ document.addEventListener("DOMContentLoaded", () => {
         `
         }
       </div>
+      <div class="share-buttons">
+        <span class="share-label">Share:</span>
+        <a class="share-btn share-twitter tooltip"
+           href="https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}&url=${encodeURIComponent(shareUrl)}"
+           target="_blank" rel="noopener noreferrer" aria-label="Share on X (Twitter)">
+          𝕏
+          <span class="tooltip-text">Share on X (Twitter)</span>
+        </a>
+        <a class="share-btn share-facebook tooltip"
+           href="https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}&quote=${encodeURIComponent(shareText)}"
+           target="_blank" rel="noopener noreferrer" aria-label="Share on Facebook">
+          f
+          <span class="tooltip-text">Share on Facebook</span>
+        </a>
+        <button class="share-btn share-copy tooltip" aria-label="Copy link">
+          🔗
+          <span class="tooltip-text">Copy link</span>
+        </button>
+      </div>
     `;
 
     // Add click handlers for delete buttons
@@ -596,6 +619,30 @@ document.addEventListener("DOMContentLoaded", () => {
           openRegistrationModal(name);
         });
       }
+    }
+
+    // Add click handler for copy link button
+    const copyButton = activityCard.querySelector(".share-copy");
+    if (copyButton) {
+      copyButton.addEventListener("click", () => {
+        if (navigator.share) {
+          navigator.share({ title: name, text: shareText, url: shareUrl }).catch((err) => {
+            if (err.name !== "AbortError") {
+              navigator.clipboard.writeText(shareUrl).then(() => {
+                showMessage("Activity link copied to clipboard!", "success");
+              }).catch(() => {
+                showMessage("Failed to share activity.", "error");
+              });
+            }
+          });
+        } else {
+          navigator.clipboard.writeText(shareUrl).then(() => {
+            showMessage("Activity link copied to clipboard!", "success");
+          }).catch(() => {
+            showMessage("Failed to copy link.", "error");
+          });
+        }
+      });
     }
 
     activitiesList.appendChild(activityCard);
